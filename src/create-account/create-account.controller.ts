@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository} from 'typeorm'
 import { CreateAccountModel } from './create-account.model';
 import { CreateAccountSchema } from 'src/schemas/create-account.schema';
+import * as bcrypt from 'bcrypt';
 
 @Controller('user-account')
 export class CreateAccountController {
@@ -13,6 +14,9 @@ export class CreateAccountController {
 
     @Post()
     public async createAccount(@Body(ValidationPipe) body: CreateAccountSchema): Promise<{data: CreateAccountModel}>{
+        const saltRounds = 10;
+        const passwordHash = bcrypt.hashSync(body.password,saltRounds)
+        body.password = passwordHash;
         try {
             const accountCreated = await this.repository.save(body);
             return { data: accountCreated };
@@ -25,6 +29,7 @@ export class CreateAccountController {
     @Get(':id') 
     public async getOneAccount(@Param('id') id: number): Promise<{ data: CreateAccountModel}> {
         const account = await this.repository.findOne({ where: { id } });
+        
         return {data: account}
        
     }
