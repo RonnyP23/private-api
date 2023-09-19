@@ -14,9 +14,12 @@ export class CreateAccountController {
 
     @Post()
     public async createAccount(@Body(ValidationPipe) body: CreateAccountSchema): Promise<{data: CreateAccountModel}>{
+
         const saltRounds = 10;
         const passwordHash = bcrypt.hashSync(body.password,saltRounds)
         body.password = passwordHash;
+        
+        
         try {
             const accountCreated = await this.repository.save(body);
             return { data: accountCreated };
