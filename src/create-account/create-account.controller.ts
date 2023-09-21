@@ -49,8 +49,14 @@ export class CreateAccountController {
     }
 
     @Delete(':id') 
-    public deleteAccount(): any {
-        return {data: 'excluir'};
-    }
+    public async deleteAccount(@Param('id') id: number): Promise<{message: string}> {
+        const result = await this.repository.delete(id); 
+        if (result.affected === 1) {
+            return { message: 'Registro excluído com sucesso' };
+          } else {
+            return { message: 'Registro não encontrado ou não pôde ser excluído' };
+          }
+        }
+        
 }
 
