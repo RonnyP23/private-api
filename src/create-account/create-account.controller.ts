@@ -28,6 +28,12 @@ export class CreateAccountController {
           }
     }
  
+    @Get() 
+    public async getAll(): Promise<CreateAccountModel[]> {
+        const account = await this.repository.find();
+        
+        return account
+    }
 
     @Get(':id') 
     public async getOneAccount(@Param('id') id: number): Promise<{ data: CreateAccountModel}> {
