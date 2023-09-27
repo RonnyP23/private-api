@@ -50,11 +50,11 @@ export class CreateAccountController {
     @Put()
     public async updateAccount(@Param('id') id: number, @Body(new ValidationPipe()) updateAccountSchema: UpdateAccountSchema): Promise<{ data: CreateAccountModel }> {
     debugger;
-    const account = await this.repository.findOne({ where: {id} });
+    const account = await this.repository.update;
 
     
 
-    return { data: account };
+    return;
 }
 
     @Delete(':id') 
