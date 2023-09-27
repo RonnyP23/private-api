@@ -3,14 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository} from 'typeorm'
 import { CreateAccountModel } from './create-account.model';
 import { CreateAccountSchema } from 'src/schemas/create-account.schema';
+import { UpdateAccountSchema } from 'src/schemas/update-account.schema';
 import * as bcrypt from 'bcrypt';
 
 @Controller('user-account')
 export class CreateAccountController {
 
-    constructor(@InjectRepository(CreateAccountModel) private repository:Repository<CreateAccountModel>) {
-
-    }
+    constructor(
+        @InjectRepository(CreateAccountModel) private repository:Repository<CreateAccountModel>,
+        
+        ) {}
 
     @Post()
     public async createAccount(@Body(ValidationPipe) body: CreateAccountSchema): Promise<{data: CreateAccountModel}>{
@@ -43,10 +45,17 @@ export class CreateAccountController {
        
     }
 
-    @Put(':id') 
-    public updateAccount(): any {
-        return {data: 'atualizado'};
-    }
+    
+
+    @Put()
+    public async updateAccount(@Param('id') id: number, @Body(new ValidationPipe()) updateAccountSchema: UpdateAccountSchema): Promise<{ data: CreateAccountModel }> {
+    debugger;
+    const account = await this.repository.findOne({ where: {id} });
+
+    
+
+    return { data: account };
+}
 
     @Delete(':id') 
     public async deleteAccount(@Param('id') id: number): Promise<{ data: CreateAccountModel}> {
