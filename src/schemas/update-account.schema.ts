@@ -6,5 +6,6 @@ export class UpdateAccountSchema {
     email: string;
     telefone: string;
     cpf: string;
+    userLevel: number
 
 }

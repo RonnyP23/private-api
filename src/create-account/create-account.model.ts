@@ -19,5 +19,8 @@ export class CreateAccountModel {
     cpf: string;
 
     @Column()
-    password: string
+    password: string;
+
+    @Column()
+    userLevel: number;
 }
